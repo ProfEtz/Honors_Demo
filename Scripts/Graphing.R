@@ -1,16 +1,15 @@
-source("Scripts/Data_cleaning.R")
+source("Scripts/cleaning.R")
 
-#set a global theme option for all plots
-theme_set(theme_classic())
+theme_set(theme_bw())
 
-#boxplot of count
-ggplot(diseases,aes(x=count,y=State)) + geom_boxplot() + 
-  facet_wrap(~disease,scales="free",nrow=2)
+#make a line graph of counts of each disease comparing states
+ggplot(diseases, aes(x= year, y= count, color=state))+
+  geom_line()+facet_wrap(~disease,scales="free_y")
 
-#make a boxplot for rate = count/population
-#this considers population size inflation of counts
-rate_boxplot <- ggplot(diseases,aes(x=rate,y=State)) + geom_boxplot() + 
-  facet_wrap(~disease,scales="free",nrow=2)
-rate_boxplot
+#make a version using rate=count/population
+graph <- ggplot(diseases, aes(x= year, y= rate, color=state))+
+  geom_line()+facet_wrap(~disease,scales="free_y",nrow=2)
 
-ggsave("graphs/rate_boxplot.png",width=8, height=4)
+#save the file in a location where we can find it later
+ggsave(filename = "graphs/rate_line_graph.png",plot = graph,
+       width=8,height=3.5)
